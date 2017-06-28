@@ -37,13 +37,13 @@
 
 
  		$scope.load = function () {
- 			$scope.list =[];
-        	console.log($scope.list);
+ 			 
+        	 
         	if ( typeof $window.localStorage.storedarray === 'undefined'){
 
         		$scope.list =[];
         	}
-        	
+
 			else{
         	 $scope.list = (JSON.parse($window.localStorage.storedarray)) ? JSON.parse($window.localStorage.storedarray) : [];
         	}
