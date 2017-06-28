@@ -37,9 +37,16 @@
 
 
  		$scope.load = function () {
-        	//console.log($scope.list);
-        	 
-    	  $scope.list = (JSON.parse($window.localStorage.storedarray)) ? JSON.parse($window.localStorage.storedarray) : [];
+ 			$scope.list =[];
+        	console.log($scope.list);
+        	if ( typeof $window.localStorage.storedarray === 'undefined'){
+
+        		$scope.list =[];
+        	}
+        	
+			else{
+        	 $scope.list = (JSON.parse($window.localStorage.storedarray)) ? JSON.parse($window.localStorage.storedarray) : [];
+        	}
 
         }
 
@@ -49,7 +56,7 @@
             localStorage.setItem("storedarray", JSON.stringify($scope.list));
 
             $scope.storedarray= (localStorage.getItem('storedarray')!==null) ? JSON.parse(localStorage.getItem('storedarray')) : [];
-            
+
         }
 
         $scope.removeItem = function(x){
