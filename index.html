@@ -10,11 +10,14 @@
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
     <!-- Latest compiled JavaScript -->
     <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
-    <script type="text/javascript" src="angular.min.js"></script>
+    <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/angular.js/1.6.1/angular.js"></script>
+
+         <script type="text/javascript" src="https://cdn.jsdelivr.net/ngstorage/0.3.6/ngStorage.min.js"></script>
+    <!-- <script type="text/javascript" src="angular.min.js"></script> -->
 </head>
 
 <body>
-<div ng-app="myList" ng-controller="myCtrl" id="mylist" class="col-md-6">
+<div ng-app="myList" ng-controller="myCtrl" ng-init="load()" id="mylist" class="col-md-6">
     <h3>AngularJS Notes</h3>
 
     <ul class="list-group"">
@@ -23,23 +26,37 @@
 
     <textarea class="form-control" rows="5" class="form-control"  ng-model="addMe"></textarea>
     <button class="btn btn-success" ng-click="addItem()">Add</button>
+
 </div>
 
 <script type="text/javascript">
-    var app= angular.module("myList",[]);
-    app.controller("myCtrl", function($scope){
+    var app= angular.module("myList",["ngStorage"]);
 
-        $scope.list = ["Many desktop publishing packages and web page editors now use Lorem Ipsum as their default model text, and a search for 'lorem ipsum' will uncover many web sites still in their infancy.",
-            "There are many variations of passages of Lorem Ipsum available, but the majority have suffered alteration in some form, by injected humour, or randomised words which don't look even slightly believable.",
-            "The standard chunk of Lorem Ipsum used since the 1500s is reproduced below for those interested. Sections 1.10.32 and 1.10.33 from \"de Finibus Bonorum et Malorum\" by Cicero are also reproduced in their exact original form, accompanied by English versions from the 1914 translation by H. Rackham.",
-            "If you use this site regularly and would like to help keep the site on the Internet, please consider donating a small sum to help pay for the hosting and bandwidth bill. There is no minimum donation, any sum is appreciated - click here to donate using PayPal. Thank you for your support.",
-            "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum."];
+    app.controller("myCtrl", function($scope,$localStorage, $sessionStorage, $window){
+
+
+
+ 		$scope.load = function () {
+        	//console.log($scope.list);
+        	 
+    	  $scope.list = (JSON.parse($window.localStorage.storedarray)) ? JSON.parse($window.localStorage.storedarray) : [];
+
+        }
 
         $scope.addItem = function () {
             $scope.list.push($scope.addMe);
+
+            localStorage.setItem("storedarray", JSON.stringify($scope.list));
+
+            $scope.storedarray= (localStorage.getItem('storedarray')!==null) ? JSON.parse(localStorage.getItem('storedarray')) : [];
+            
         }
+
         $scope.removeItem = function(x){
             $scope.list.splice(x,1);
+            localStorage.setItem("storedarray", JSON.stringify($scope.list));
+
+            $scope.storedarray= (localStorage.getItem('storedarray')!==null) ? JSON.parse(localStorage.getItem('storedarray')) : [];
         }
 
     });
