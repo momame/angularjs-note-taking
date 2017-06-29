@@ -26,7 +26,7 @@
 
     <textarea class="form-control" rows="5" class="form-control"  ng-model="addMe"></textarea>
     <button class="btn btn-success" ng-click="addItem()">Add</button>
-
+    <p>{{errortext}}</p>
 </div>
 
 <script type="text/javascript">
@@ -51,7 +51,15 @@
         }
 
         $scope.addItem = function () {
-            $scope.list.push($scope.addMe);
+
+        	$scope.errortext = "";
+	        if (!$scope.addMe) {return;}
+
+	        if ($scope.list.indexOf($scope.addMe) == -1) {
+	            $scope.list.push($scope.addMe);
+	        } else {
+	            $scope.errortext = "The item is already in your list.";
+	        }
 
             localStorage.setItem("storedarray", JSON.stringify($scope.list));
 
@@ -60,7 +68,10 @@
         }
 
         $scope.removeItem = function(x){
+        	$scope.errortext = "";
+            
             $scope.list.splice(x,1);
+            
             localStorage.setItem("storedarray", JSON.stringify($scope.list));
 
             $scope.storedarray= (localStorage.getItem('storedarray')!==null) ? JSON.parse(localStorage.getItem('storedarray')) : [];
